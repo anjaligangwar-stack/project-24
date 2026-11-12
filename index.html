@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rock Paper Scissors</title>
+<style>
+  *{
+    margin:0; 
+    padding:0;
+   box-sizing:border-box; 
+   font-family: Arial, sans-serif;
+}
+  body{
+    background:linear-gradient(135deg,purple,blue); /* photo wala pink */
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  }
+  .card{
+    background:white;
+    width:420px;
+    padding:25px 20px;
+    border-radius:8px;
+    text-align:center;
+    height: 60%;
+  }
+  h2{
+    font-size:25px; 
+    margin-bottom:20px;
+    text-shadow: 0px 5px 15px;
+}
+  p{
+    font-size:20px; 
+    font-weight:bold;
+     text-shadow: 0px 5px 20px;
+}
+
+  /* 3 gol button */
+  .weapons{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    margin:15px 0 25px;
+    margin-top: 80px;
+  }
+  .weapons button{
+    width:60px; height:60px;
+    border-radius:50%;
+    border:none;
+    background:#42a6df;
+    font-size:35px;
+    cursor:pointer;
+  }
+  .weapons button:hover{
+    transform:scale(1.1);
+    box-shadow: 0px 5px 10px;
+}
+
+  /* Player vs Computer */
+  .battle{
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    margin:15px 0;
+  }
+  .battle .emoji{
+    font-size:60px;
+}
+  .battle span{
+    font-size:12px; 
+    color:#555;
+}
+
+
+  #resultText{
+    font-size:17px;
+     margin:5px 0;
+    }
+  #playAgain{
+    display:none;
+    background:#2c9dac;
+    border:none;
+    padding:5px 12px;
+    border-radius:5px;
+    font-size:20px;
+    cursor:pointer;
+    margin:5px auto 15px;
+  }
+
+  /* Neeche wala score bar */
+  .score{
+    background:#8abbdc;
+    color:black;
+    font-weight:bold;
+    font-size:18px;
+    padding:15px;
+    border-radius:5px;
+    display:flex;
+    justify-content:center;
+    gap:30px;
+    margin-top: 100px;
+  }
+  .hidden{
+    display:none !important;
+    }
+
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h2>Rock Paper Scissors</h2>
+
+  <!-- SCREEN 1 : Select Weapon -->
+  <div id="selectScreen">
+    <p>Select your Weapon</p>
+    <div class="weapons">
+      <button onclick="play('rock')">✊</button>
+      <button onclick="play('paper')">✋</button>
+      <button onclick="play('scissors')">✌️</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 2 : Result -->
+  <div id="resultScreen" class="hidden">
+    <div style="display:flex; justify-content:space-around; font-size:17px;">
+      <span>Player</span><span>v/s</span><span>Computer</span>
+    </div>
+    <div class="battle">
+      <div class="emoji" id="playerEmoji">✊</div>
+      <div class="emoji" id="computerEmoji">✊</div>
+    </div>
+    <p id="resultText">Congrats, You Won! 🎉</p>
+    <button id="playAgain" onclick="resetGame()">↻ Play Again</button>
+  </div>
+
+  <div class="score">
+    <span>Won: <span id="won">0</span></span> |
+    <span>Lost: <span id="lost">0</span></span> |
+    <span>Draw: <span id="draw">0</span></span>
+  </div>
+</div>
+
+<script>
+  let won = 0, lost = 0, draw = 0;
+
+  let emojiMap = {
+    rock: "✊",
+    paper: "✋",
+    scissors: "✌️"
+  };
+
+  function play(playerChoice){
+    // 1. Computer ka random choice
+    let choices = ["rock", "paper", "scissors"];
+    let computerChoice = choices[Math.floor(Math.random() * 3)];
+
+    // 2. Emoji dikhao
+    document.getElementById("playerEmoji").innerText = emojiMap[playerChoice];
+    document.getElementById("computerEmoji").innerText = emojiMap[computerChoice];
+
+    // 3. Kaun jeeta? - Game ka main logic
+    let resultText = document.getElementById("resultText");
+    if(playerChoice === computerChoice){
+      draw++;
+      resultText.innerText = "It's a Draw! 🤝";
+    } else if(
+      (playerChoice === "rock" && computerChoice === "scissors") ||
+      (playerChoice === "paper" && computerChoice === "rock") ||
+      (playerChoice === "scissors" && computerChoice === "paper")
+    ){
+      won++;
+      resultText.innerText = "Congrats, You Won! 🎉";
+    } else {
+      lost++;
+      resultText.innerText = "Oops, You Lost! 😢";
+    }
+
+    // 4. Score update karo
+    document.getElementById("won").innerText = won;
+    document.getElementById("lost").innerText = lost;
+    document.getElementById("draw").innerText = draw;
+
+    // 5. Screen badlo
+    document.getElementById("selectScreen").classList.add("hidden");
+    document.getElementById("resultScreen").classList.remove("hidden");
+    document.getElementById("playAgain").style.display = "block";
+  }
+
+  function resetGame(){
+    document.getElementById("selectScreen").classList.remove("hidden");
+    document.getElementById("resultScreen").classList.add("hidden");
+  }
+</script>
+
+</body>
+</html>
